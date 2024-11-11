@@ -258,6 +258,11 @@ impl SkBuff {
     pub fn remote_port(&self) -> u32 {
         unsafe { (*self.skb).remote_port }
     }
+
+    #[inline]
+    pub fn tstamp(&self) -> u64 {
+        unsafe { (*self.skb).tstamp }
+    }
 }
 
 pub struct SkBuffContext {
@@ -428,6 +433,7 @@ impl SkBuffContext {
     pub fn pull_data(&self, len: u32) -> Result<(), c_long> {
         self.skb.pull_data(len)
     }
+
 }
 
 impl EbpfContext for SkBuffContext {
