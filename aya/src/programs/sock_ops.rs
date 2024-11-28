@@ -92,21 +92,6 @@ impl SockOps {
                 .insert(SockOpsLink::new(SockOpsLinkInner::ProgAttach(link)))
         }
     }
-
-    /// Detaches the program.
-    ///
-    /// See [SockOps::attach].
-    pub fn detach(&mut self, link_id: SockOpsLinkId) -> Result<(), ProgramError> {
-        self.data.links.remove(link_id)
-    }
-
-    /// Takes ownership of the link referenced by the provided link_id.
-    ///
-    /// The link will be detached on `Drop` and the caller is now responsible
-    /// for managing its lifetime.
-    pub fn take_link(&mut self, link_id: SockOpsLinkId) -> Result<SockOpsLink, ProgramError> {
-        self.data.take_link(link_id)
-    }
 }
 
 #[derive(Debug, Hash, Eq, PartialEq)]
@@ -145,5 +130,6 @@ define_link_wrapper!(
     /// The type returned by [SockOps::attach]. Can be passed to [SockOps::detach].
     SockOpsLinkId,
     SockOpsLinkInner,
-    SockOpsLinkIdInner
+    SockOpsLinkIdInner,
+    SockOps,
 );

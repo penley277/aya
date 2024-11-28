@@ -8,7 +8,7 @@ use std::{
 };
 
 use cargo_metadata::{
-    Artifact, CompilerMessage, Message, Metadata, MetadataCommand, Package, Target,
+    Artifact, CompilerMessage, Message, Metadata, MetadataCommand, Package, Target, TargetKind,
 };
 use xtask::{exec, AYA_BUILD_INTEGRATION_BPF, LIBBPF_DIR};
 
@@ -67,6 +67,7 @@ fn main() {
 
     const C_BPF: &[(&str, bool)] = &[
         ("ext.bpf.c", false),
+        ("iter.bpf.c", true),
         ("main.bpf.c", false),
         ("multimap-btf.bpf.c", false),
         ("reloc.bpf.c", true),
@@ -280,7 +281,7 @@ fn main() {
 
         let Package { targets, .. } = integration_ebpf_package;
         for Target { name, kind, .. } in targets {
-            if *kind != ["bin"] {
+            if *kind != [TargetKind::Bin] {
                 continue;
             }
             let dst = out_dir.join(name);

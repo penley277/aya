@@ -103,24 +103,6 @@ impl CgroupSockopt {
         }
     }
 
-    /// Takes ownership of the link referenced by the provided link_id.
-    ///
-    /// The link will be detached on `Drop` and the caller is now responsible
-    /// for managing its lifetime.
-    pub fn take_link(
-        &mut self,
-        link_id: CgroupSockoptLinkId,
-    ) -> Result<CgroupSockoptLink, ProgramError> {
-        self.data.take_link(link_id)
-    }
-
-    /// Detaches the program.
-    ///
-    /// See [CgroupSockopt::attach].
-    pub fn detach(&mut self, link_id: CgroupSockoptLinkId) -> Result<(), ProgramError> {
-        self.data.links.remove(link_id)
-    }
-
     /// Creates a program from a pinned entry on a bpffs.
     ///
     /// Existing links will not be populated. To work with existing links you should use [`crate::programs::links::PinnedLink`].
@@ -172,5 +154,6 @@ define_link_wrapper!(
     /// The type returned by [CgroupSockopt::attach]. Can be passed to [CgroupSockopt::detach].
     CgroupSockoptLinkId,
     CgroupSockoptLinkInner,
-    CgroupSockoptLinkIdInner
+    CgroupSockoptLinkIdInner,
+    CgroupSockopt,
 );

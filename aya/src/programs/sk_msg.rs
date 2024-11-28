@@ -89,21 +89,6 @@ impl SkMsg {
 
         self.data.links.insert(SkMsgLink::new(link))
     }
-
-    /// Detaches the program from a sockmap.
-    ///
-    /// See [SkMsg::attach].
-    pub fn detach(&mut self, link_id: SkMsgLinkId) -> Result<(), ProgramError> {
-        self.data.links.remove(link_id)
-    }
-
-    /// Takes ownership of the link referenced by the provided link_id.
-    ///
-    /// The link will be detached on `Drop` and the caller is now responsible
-    /// for managing its lifetime.
-    pub fn take_link(&mut self, link_id: SkMsgLinkId) -> Result<SkMsgLink, ProgramError> {
-        self.data.take_link(link_id)
-    }
 }
 
 define_link_wrapper!(
@@ -112,5 +97,6 @@ define_link_wrapper!(
     /// The type returned by [SkMsg::attach]. Can be passed to [SkMsg::detach].
     SkMsgLinkId,
     ProgAttachLink,
-    ProgAttachLinkId
+    ProgAttachLinkId,
+    SkMsg,
 );
